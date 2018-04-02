@@ -3,7 +3,8 @@ const Companies = require('../models/companies');
 module.exports = {
     getByBaseTargeting: function(countryCode, category) {
         return new Promise(function (resolve, reject) {
-            Companies.find({"category": category, "countries": countryCode}, function (err, companies) {
+            const findObj = {"countries": new RegExp('\\b' + countryCode + '\\b', 'i'), category: new RegExp('\\b' + category + '\\b', 'i')};
+            Companies.find(findObj, function (err, companies) {
                 if (err) return reject(err);
                 resolve(companies);
             });

@@ -9,7 +9,7 @@ const successLog = require('../components/logger').successlog;
 router.get('/', function(req, res, next) {
     const countryCode = req.query.country_code;
     const category = req.query.category;
-    const baseBid = req.query.base_bid;
+    const baseBid = parseFloat(req.query.base_bid);
 
     // Base Targeting
     ExchangeController.getByBaseTargeting(countryCode, category)
