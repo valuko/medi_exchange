@@ -4,9 +4,12 @@ const ExchangeController = require('../controller/exchange');
 const errorLog = require('../components/logger').errorlog;
 const successLog = require('../components/logger').successlog;
 
-
 /* GET exchange listing. */
 router.get('/', function(req, res, next) {
+    req.checkQuery('country_code').exists();
+    req.checkQuery('category').exists();
+    req.checkQuery('base_bid').exists();
+
     const countryCode = req.query.country_code;
     const category = req.query.category;
     const baseBid = parseFloat(req.query.base_bid);
@@ -43,13 +46,13 @@ router.get('/', function(req, res, next) {
             // Shortlist company
             const shortlistedCompany = baseBidCompanies.reduce(ExchangeController.shortlistCompany);
 
-            successLog.info(`Shortlisted Company: ${shortlistedCompany}`);
-            return ExchangeController.updateCompanyBudget(shortlistedCompany, baseBid);
-        })
-        .then(function (shortlistCompany, updateResult) {
-            successLog.info(`Selected Company ID: ${shortlistCompany.company_id}`);
+            //successLog.info(`Shortlisted Company: ${shortlistedCompany}`);
+            return ExchangeController.updateCompanyBudget(shortlistedCompany, baseBid)
+                .then((function (shortlistCompany, updateResult) {
+                    successLog.info(`Selected Company ID: ${shortlistCompany.company_id}`);
 
-            return res.json(shortlistCompany.company_id);
+                    return res.json(shortlistCompany.company_id);
+                }));
         })
         .catch(function (err) {
             console.log(err);

@@ -24,7 +24,6 @@ module.exports = {
             Companies.update({company_id: company.company_id}, { $set: { budget : newBudget }}, function (err, updateResult) {
                 if (err) return reject(err);
 
-                console.log("Raw response: ", updateResult);
                 resolve(company, updateResult);
             });
         });

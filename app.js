@@ -8,9 +8,11 @@ var indexRouter = require('./routes/index');
 var exchangeRouter = require('./routes/exchange');
 // DB conn
 var db = require('./components/db');
+const expressValidator = require('express-validator');
 
 var app = express();
 
+app.use(expressValidator());
 // view engine setup
 app.set('views', path.join(__dirname, 'views'));
 app.set('view engine', 'jade');
